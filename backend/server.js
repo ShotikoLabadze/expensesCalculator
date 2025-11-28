@@ -4,10 +4,12 @@ const express = require("express");
 const connectDB = require("./config/db");
 
 const financeRoutes = require("./routes/financeRoutes");
+const categoryRoutes = require("./routes/categoryRoutes");
 
 const app = express();
 
 app.use(express.json());
+app.use("/api/categories", categoryRoutes);
 
 connectDB();
 app.use("/api/finances", financeRoutes);
