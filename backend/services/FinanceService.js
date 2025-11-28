@@ -64,6 +64,38 @@ class FinanceService {
 
     return result[0] || { total: 0 };
   }
+
+  async predictNextMonthExpense(referenceDate = new Date()) {
+    const end = new Date(
+      referenceDate.getFullYear(),
+      referenceDate.getMonth() + 1,
+      1
+    );
+    const start = new Date(
+      referenceDate.getFullYear(),
+      referenceDate.getMonth() - 2,
+      1
+    );
+
+    const agg = await Finance.aggregate([
+      { $match: { type: "expense", date: { $gte: start, $lt: end } } },
+      {
+        $group: {
+          _id: { year: { $year: "$date" }, month: { $month: "$date" } },
+          total: { $sum: "$amount" },
+        },
+      },
+      { $sort: { "_id.year": 1, "_id.month": 1 } },
+    ]);
+
+    if (!agg || agg.length === 0) return { predictedExpense: 0, monthsUsed: 0 };
+
+    const monthsUsed = agg.length;
+    const sum = agg.reduce((s, r) => s + Number(r.total), 0);
+    const avg = sum / monthsUsed;
+
+    return { predictedExpense: Number(avg.toFixed(2)), monthsUsed, raw: agg };
+  }
 }
 
 module.exports = new FinanceService();

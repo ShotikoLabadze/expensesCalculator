@@ -63,6 +63,15 @@ class FinanceController {
       return res.status(500).json({ message: err.message });
     }
   }
+
+  async predictExpense(req, res) {
+    try {
+      const prediction = await FinanceService.predictNextMonthExpense();
+      return res.json(prediction);
+    } catch (err) {
+      return res.status(500).json({ message: err.message });
+    }
+  }
 }
 
 module.exports = new FinanceController();

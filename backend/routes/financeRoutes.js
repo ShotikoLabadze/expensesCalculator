@@ -18,4 +18,8 @@ router.get("/category-breakdown", (req, res) =>
   FinanceController.categoryBreakdown(req, res)
 );
 
+router.get("/predict", (req, res) =>
+  FinanceController.predictExpense(req, res)
+);
+
 module.exports = router;
