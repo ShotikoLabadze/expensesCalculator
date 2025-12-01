@@ -5,9 +5,10 @@ const FinanceSchema = new mongoose.Schema(
     amount: { type: Number, required: true },
     description: { type: String },
     date: { type: Date, required: true },
-    category: {
-      type: String,
 
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
       required: true,
     },
   },

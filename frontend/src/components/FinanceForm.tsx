@@ -19,11 +19,22 @@ const FinanceForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await addFinance({ amount, description, date, category });
-    alert("Finance added!");
-    setAmount(0);
-    setDescription("");
-    setCategory("");
+
+    if (!category) {
+      alert("Please select a category");
+      return;
+    }
+
+    try {
+      await addFinance({ amount, description, date, category });
+      alert("Finance added!");
+      setAmount(0);
+      setDescription("");
+      setCategory("");
+    } catch (err: any) {
+      console.error(err.response?.data);
+      alert(err.response?.data?.message || "Error adding finance");
+    }
   };
 
   return (

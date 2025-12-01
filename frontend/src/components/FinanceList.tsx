@@ -25,7 +25,9 @@ const FinanceList = () => {
       <ul>
         {finances.map((f) => (
           <li key={f._id}>
-            {f.date} - {f.category.name} - ${f.amount} - {f.description}
+            {new Date(f.date).toLocaleDateString()} -{" "}
+            {f.category?.name || "Unknown category"} - ${f.amount} -{" "}
+            {f.description || ""}
             <button onClick={() => handleDelete(f._id)}>Delete</button>
           </li>
         ))}
