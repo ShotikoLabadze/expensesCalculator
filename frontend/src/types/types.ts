@@ -1,5 +1,5 @@
 export interface Finance {
-  _id: number;
+  _id: string;
   amount: number;
   description?: string;
   date: string;
@@ -7,7 +7,7 @@ export interface Finance {
 }
 
 export interface Category {
-  _id: number;
+  _id: string;
   name: string;
   type: "income" | "expense";
 }

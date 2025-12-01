@@ -1,5 +1,5 @@
 import React from "react";
-import { Category } from "../types/finance";
+import type { Category } from "../types/types";
 
 interface Props {
   categories: Category[];
