@@ -1,0 +1,52 @@
+import React, { useState } from "react";
+import { registerUser } from "../api/auth";
+
+interface Props {
+  onRegister: () => void;
+}
+
+const Register: React.FC<Props> = ({ onRegister }) => {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const res = await registerUser({ username, email, password });
+      localStorage.setItem("token", res.token);
+      onRegister(); // reload dashboard or redirect
+    } catch (err: any) {
+      alert(err.response?.data?.message || "Registration failed");
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        placeholder="Username"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        required
+      />
+      <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+      />
+      <button type="submit">Register</button>
+    </form>
+  );
+};
+
+export default Register;
