@@ -1,22 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { getFinances, deleteFinance } from "../api/finance";
+import React from "react";
+import { deleteFinance } from "../api/finance";
 import type { Finance } from "../types/types";
 
-const FinanceList = () => {
-  const [finances, setFinances] = useState<Finance[]>([]);
-
-  useEffect(() => {
-    loadFinances();
-  }, []);
-
-  const loadFinances = async () => {
-    const data = await getFinances();
-    setFinances(data);
-  };
-
+const FinanceList = ({
+  finances,
+  onDelete,
+}: {
+  finances: Finance[];
+  onDelete: () => void;
+}) => {
   const handleDelete = async (id: string) => {
     await deleteFinance(id);
-    loadFinances();
+    onDelete();
   };
 
   return (
@@ -25,9 +20,7 @@ const FinanceList = () => {
       <ul>
         {finances.map((f) => (
           <li key={f._id}>
-            {new Date(f.date).toLocaleDateString()} -{" "}
-            {f.category?.name || "Unknown category"} - ${f.amount} -{" "}
-            {f.description || ""}
+            {f.date} - {f.category?.name} - ${f.amount} - {f.description}
             <button onClick={() => handleDelete(f._id)}>Delete</button>
           </li>
         ))}
