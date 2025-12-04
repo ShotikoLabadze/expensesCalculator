@@ -16,7 +16,6 @@ app.use("/api/finances", financeRoutes);
 
 app.get("/", (req, res) => res.send("Backend is running!"));
 
-// Connect to MongoDB
 connectDB();
 
 module.exports = app;
