@@ -15,6 +15,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/finances", financeRoutes);
 
-connectDB();
+connectDB()
+  .then(() => console.log("MongoDB connected!"))
+  .catch((err) => console.error("MongoDB connection error:", err));
 
 module.exports = app;
