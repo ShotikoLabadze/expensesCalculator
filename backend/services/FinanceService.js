@@ -1,3 +1,4 @@
+console.log("__dirname:", __dirname);
 const Finance = require("../models/Finance");
 
 class FinanceService {
