@@ -2,7 +2,7 @@ require("dotenv").config();
 const cors = require("cors");
 const express = require("express");
 const serverless = require("serverless-http");
-const connectDB = require("./config/db");
+const connect = require("./config/db");
 
 const authRoutes = require("./routes/authRoutes");
 const financeRoutes = require("./routes/financeRoutes");
@@ -12,12 +12,15 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use("/api/categories", categoryRoutes);
-app.use("/api/auth", authRoutes);
-app.use("/api/finances", financeRoutes);
 
-connectDB()
+connect()
   .then(() => console.log("MongoDB connected!"))
   .catch((err) => console.error("MongoDB connection error:", err));
+
+app.use("/api/auth", authRoutes);
+app.use("/api/categories", categoryRoutes);
+app.use("/api/finances", financeRoutes);
+
+app.get("/", (req, res) => res.send("Backend is running!"));
 
 module.exports = serverless(app);
