@@ -32,7 +32,9 @@ export const deleteFinance = async (id: string) => {
 export const monthlySummary = async (month: number, year: number) => {
   const res = await axios.get(
     `${BASE_URL}/finances/summary?month=${month}&year=${year}`,
-    { headers: getAuthHeader() }
+    {
+      headers: getAuthHeader(),
+    }
   );
   return res.data;
 };
