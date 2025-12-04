@@ -48,20 +48,6 @@ class FinanceController {
     }
   }
 
-  async categoryBreakdown(req, res) {
-    try {
-      const { month, year } = req.query;
-      const result = await FinanceService.categoryBreakdown(
-        month,
-        year,
-        req.user._id
-      );
-      res.json(result);
-    } catch (err) {
-      res.status(500).json({ message: err.message });
-    }
-  }
-
   async monthlySummary(req, res) {
     try {
       const { month, year } = req.query;

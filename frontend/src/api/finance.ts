@@ -29,32 +29,12 @@ export const deleteFinance = async (id: string) => {
   return res.data;
 };
 
-export const updateFinance = async (id: string, data: any) => {
-  const res = await axios.put(`${BASE_URL}/finances/${id}`, data, {
-    headers: getAuthHeader(),
-  });
-  return res.data;
-};
-
 export const monthlySummary = async (month: number, year: number) => {
   const res = await axios.get(
     `${BASE_URL}/finances/summary?month=${month}&year=${year}`,
-    { headers: getAuthHeader() }
+    {
+      headers: getAuthHeader(),
+    }
   );
-  return res.data;
-};
-
-export const getCategoryBreakdown = async (month: number, year: number) => {
-  const res = await axios.get(
-    `${BASE_URL}/finances/category-breakdown?month=${month}&year=${year}`,
-    { headers: getAuthHeader() }
-  );
-  return res.data;
-};
-
-export const predictNextMonthExpense = async () => {
-  const res = await axios.get(`${BASE_URL}/finances/predict`, {
-    headers: getAuthHeader(),
-  });
   return res.data;
 };

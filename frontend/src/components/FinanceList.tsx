@@ -1,4 +1,3 @@
-import React from "react";
 import { deleteFinance } from "../api/finance";
 import type { Finance } from "../types/types";
 
@@ -16,11 +15,23 @@ const FinanceList = ({
 
   return (
     <div>
-      <h2>Finance List</h2>
+      <h2>Transactions</h2>
       <ul>
+        <li>
+          <strong>Date</strong>
+          <strong>Type</strong>
+          <strong>Amount</strong>
+          <strong>Description</strong>
+          <span>Action</span>
+        </li>
         {finances.map((f) => (
           <li key={f._id}>
-            {f.date} - {f.category?.name} - ${f.amount} - {f.description}
+            <span>{new Date(f.date).toLocaleDateString()}</span>
+            <span className={f.type === "income" ? "income" : "expense"}>
+              {f.type.toUpperCase()}
+            </span>
+            <span>${f.amount.toLocaleString()}</span>
+            <span>{f.description || "-"}</span>
             <button onClick={() => handleDelete(f._id)}>Delete</button>
           </li>
         ))}
