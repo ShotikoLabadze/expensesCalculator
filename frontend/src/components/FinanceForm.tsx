@@ -6,7 +6,8 @@ interface Props {
 }
 
 const FinanceForm: React.FC<Props> = ({ onAdded }) => {
-  const [amount, setAmount] = useState<number>(0);
+  // Initialize amount as an empty string
+  const [amount, setAmount] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [date, setDate] = useState<string>(
     new Date().toISOString().slice(0, 10)
@@ -15,8 +16,16 @@ const FinanceForm: React.FC<Props> = ({ onAdded }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await addFinance({ amount, description, date, type });
-    setAmount(0);
+
+    await addFinance({
+      amount: Number(amount),
+      description,
+      date,
+      type,
+    });
+
+    // Reset form
+    setAmount("");
     setDescription("");
     setType("expense");
     onAdded();
@@ -49,7 +58,7 @@ const FinanceForm: React.FC<Props> = ({ onAdded }) => {
         type="number"
         placeholder="Amount"
         value={amount}
-        onChange={(e) => setAmount(+e.target.value)}
+        onChange={(e) => setAmount(e.target.value)}
         required
       />
       <input
