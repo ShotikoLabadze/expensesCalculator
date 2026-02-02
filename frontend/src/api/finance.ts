@@ -1,40 +1,28 @@
-import axios from "axios";
+import api from "@/lib/api";
+import type { Finance, MonthlySummary, FinanceFormData } from "@/types/finance";
 
-const BASE_URL =
-  import.meta.env.VITE_BACKEND_URL || "http://localhost:5000/api";
-
-const getAuthHeader = () => {
-  const token = localStorage.getItem("token");
-  return { Authorization: `Bearer ${token}` };
-};
-
-export const getFinances = async () => {
-  const res = await axios.get(`${BASE_URL}/finances`, {
-    headers: getAuthHeader(),
-  });
+export const getFinances = async (): Promise<Finance[]> => {
+  const res = await api.get("/finances");
   return res.data;
 };
 
-export const addFinance = async (data: any) => {
-  const res = await axios.post(`${BASE_URL}/finances`, data, {
-    headers: getAuthHeader(),
-  });
+export const addFinance = async (data: FinanceFormData): Promise<Finance> => {
+  const payload = {
+    ...data,
+    amount: Number(data.amount),
+  };
+  const res = await api.post("/finances", payload);
   return res.data;
 };
 
-export const deleteFinance = async (id: string) => {
-  const res = await axios.delete(`${BASE_URL}/finances/${id}`, {
-    headers: getAuthHeader(),
-  });
-  return res.data;
+export const deleteFinance = async (id: string): Promise<void> => {
+  await api.delete(`/finances/${id}`);
 };
 
-export const monthlySummary = async (month: number, year: number) => {
-  const res = await axios.get(
-    `${BASE_URL}/finances/summary?month=${month}&year=${year}`,
-    {
-      headers: getAuthHeader(),
-    }
-  );
+export const getMonthlySummary = async (
+  month: number,
+  year: number,
+): Promise<MonthlySummary> => {
+  const res = await api.get(`/finances/summary?month=${month}&year=${year}`);
   return res.data;
 };
