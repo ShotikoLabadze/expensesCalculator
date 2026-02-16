@@ -7,27 +7,42 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Dashboard from "./pages/Dashboard";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
+import { User } from "@/api/finance";
 
 const queryClient = new QueryClient();
 
 const App: React.FC = () => {
   const [token, setToken] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const savedToken = localStorage.getItem("token");
+    const savedUser = localStorage.getItem("user");
+
     setToken(savedToken);
+    if (savedUser) {
+      try {
+        setUser(JSON.parse(savedUser));
+      } catch (e) {
+        console.error("Failed to parse user from storage");
+      }
+    }
     setIsLoading(false);
   }, []);
 
-  const handleLogin = (newToken: string) => {
+  const handleLogin = (newToken: string, userData: User) => {
     localStorage.setItem("token", newToken);
+    localStorage.setItem("user", JSON.stringify(userData));
     setToken(newToken);
+    setUser(userData);
   };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     setToken(null);
+    setUser(null);
   };
 
   if (isLoading) {
@@ -70,7 +85,7 @@ const App: React.FC = () => {
             path="/dashboard"
             element={
               token ? (
-                <Dashboard onLogout={handleLogout} />
+                <Dashboard onLogout={handleLogout} user={user} />
               ) : (
                 <Navigate to="/login" replace />
               )

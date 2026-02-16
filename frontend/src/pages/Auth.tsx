@@ -8,9 +8,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, CreditCard } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { User } from "@/api/finance";
 
 interface AuthProps {
-  onLogin: (token: string) => void;
+  onLogin: (token: string, user: User) => void;
   defaultTab?: "login" | "signup";
 }
 
@@ -35,9 +36,9 @@ const Auth: React.FC<AuthProps> = ({ onLogin, defaultTab = "login" }) => {
         data = await registerUser(username, email, password);
       }
 
-      if (data.token) {
-        localStorage.setItem("token", data.token);
-        onLogin(data.token);
+      if (data.token && data.user) {
+        onLogin(data.token, data.user);
+
         toast({
           title: activeTab === "login" ? "Welcome back!" : "Account created!",
           description:
@@ -67,7 +68,7 @@ const Auth: React.FC<AuthProps> = ({ onLogin, defaultTab = "login" }) => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background px-4">
-      <Card className="w-full max-w-md border-0 shadow-auth rounded-2xl">
+      <Card className="w-full max-w-md border-0 shadow-lg rounded-2xl">
         <CardContent className="p-8">
           <div className="flex flex-col items-center mb-8">
             <div className="p-3 rounded-xl bg-foreground mb-4">
@@ -114,7 +115,6 @@ const Auth: React.FC<AuthProps> = ({ onLogin, defaultTab = "login" }) => {
             </button>
           </div>
 
-          {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
             {activeTab === "signup" && (
               <div className="space-y-2">

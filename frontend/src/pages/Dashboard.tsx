@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Bell, User, CreditCard } from "lucide-react";
+import { Bell, User as UserIcon, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -11,14 +11,22 @@ import { useToast } from "@/hooks/use-toast";
 import StatCards from "@/components/StatCards";
 import TransactionFeed from "@/components/TransactionFeed";
 import NewTransactionSheet from "@/components/NewTransactionSheet";
-import { getFinances, getMonthlySummary, deleteFinance } from "@/api/finance";
+
+import {
+  getFinances,
+  getMonthlySummary,
+  deleteFinance,
+  type User,
+} from "@/api/finance";
+
 import type { Finance } from "@/types/finance";
 
 interface DashboardProps {
   onLogout: () => void;
+  user: User | null;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
+const Dashboard: React.FC<DashboardProps> = ({ onLogout, user }) => {
   const [finances, setFinances] = useState<Finance[]>([]);
   const [income, setIncome] = useState<number>(0);
   const [expense, setExpense] = useState<number>(0);
@@ -107,15 +115,17 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
                   className="flex items-center gap-2 rounded-lg px-3"
                 >
                   <div className="p-1.5 rounded-full bg-muted">
-                    <User className="h-4 w-4 text-muted-foreground" />
+                    <UserIcon className="h-4 w-4 text-muted-foreground" />
                   </div>
-                  <span className="font-medium">John Doe</span>
+                  <span className="font-medium">
+                    {user?.email || "Account"}
+                  </span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
                 <DropdownMenuItem
                   onClick={handleLogout}
-                  className="cursor-pointer"
+                  className="cursor-pointer text-destructive focus:text-destructive"
                 >
                   Logout
                 </DropdownMenuItem>

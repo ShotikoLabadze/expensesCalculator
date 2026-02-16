@@ -26,3 +26,14 @@ export const getMonthlySummary = async (
   const res = await api.get(`/finances/summary?month=${month}&year=${year}`);
   return res.data;
 };
+
+export interface User {
+  id: string;
+  email: string;
+  username?: string;
+}
+
+export interface AuthResponse {
+  user: User;
+  token: string;
+}
