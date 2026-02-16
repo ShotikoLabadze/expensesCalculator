@@ -1,4 +1,10 @@
-import { TrendingUp, TrendingDown, Trash2, Wallet, Receipt } from "lucide-react";
+import {
+  TrendingUp,
+  TrendingDown,
+  Trash2,
+  Wallet,
+  Receipt,
+} from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -36,8 +42,8 @@ const TransactionFeed: React.FC<TransactionFeedProps> = ({
   };
 
   const sortedFinances = [...finances].sort((a, b) => {
-    const dateA = new Date(a.createdAt || a.date || 0);
-    const dateB = new Date(b.createdAt || b.date || 0);
+    const dateA = new Date(a.date || 0);
+    const dateB = new Date(b.date || 0);
     return dateB.getTime() - dateA.getTime();
   });
 
@@ -46,7 +52,9 @@ const TransactionFeed: React.FC<TransactionFeedProps> = ({
       <CardHeader className="pb-4 px-6 pt-6">
         <div className="flex items-center gap-2">
           <Receipt className="h-5 w-5 text-muted-foreground" />
-          <CardTitle className="text-lg font-semibold">Recent Transactions</CardTitle>
+          <CardTitle className="text-lg font-semibold">
+            Recent Transactions
+          </CardTitle>
         </div>
       </CardHeader>
       <CardContent className="pt-0 px-6 pb-6">
@@ -55,9 +63,8 @@ const TransactionFeed: React.FC<TransactionFeedProps> = ({
             <div className="p-4 rounded-full bg-muted mb-4">
               <Wallet className="h-8 w-8 text-muted-foreground" />
             </div>
-            <p className="text-muted-foreground font-medium">No transactions yet</p>
-            <p className="text-sm text-muted-foreground mt-1">
-              Add your first transaction to get started
+            <p className="text-muted-foreground font-medium">
+              No transactions yet
             </p>
           </div>
         ) : (
@@ -68,7 +75,8 @@ const TransactionFeed: React.FC<TransactionFeedProps> = ({
                   key={finance._id}
                   className={cn(
                     "flex items-center justify-between py-4 transition-all duration-200 group",
-                    index !== sortedFinances.length - 1 && "border-b border-border/50"
+                    index !== sortedFinances.length - 1 &&
+                      "border-b border-border/50",
                   )}
                 >
                   <div className="flex items-center gap-4">
@@ -77,7 +85,7 @@ const TransactionFeed: React.FC<TransactionFeedProps> = ({
                         "p-2.5 rounded-xl",
                         finance.type === "income"
                           ? "bg-stat-income-bg"
-                          : "bg-stat-expense-bg"
+                          : "bg-stat-expense-bg",
                       )}
                     >
                       {finance.type === "income" ? (
@@ -86,20 +94,24 @@ const TransactionFeed: React.FC<TransactionFeedProps> = ({
                         <TrendingDown className="h-5 w-5 text-stat-expense" />
                       )}
                     </div>
-                    <div>
-                      <p className="font-medium text-foreground">{finance.title}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {formatDate(finance.createdAt || finance.date)}
+
+                    <div className="flex flex-col">
+                      <p className="font-medium text-foreground leading-none">
+                        {finance.description || "Untitled Transaction"}
+                      </p>
+                      <p className="text-[11px] text-muted-foreground/70 mt-1.5">
+                        {formatDate(finance.date)}
                       </p>
                     </div>
                   </div>
+
                   <div className="flex items-center gap-3">
                     <span
                       className={cn(
                         "font-semibold",
                         finance.type === "income"
                           ? "text-stat-income"
-                          : "text-stat-expense"
+                          : "text-stat-expense",
                       )}
                     >
                       {finance.type === "income" ? "+" : "-"}
@@ -108,7 +120,7 @@ const TransactionFeed: React.FC<TransactionFeedProps> = ({
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="h-8 w-8 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="h-8 w-8 rounded-lg text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity"
                       onClick={() => onDelete(finance._id)}
                       disabled={isDeleting === finance._id}
                     >

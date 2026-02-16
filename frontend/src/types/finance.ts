@@ -3,6 +3,7 @@ export interface Finance {
   title: string;
   amount: number;
   type: "income" | "expense";
+  description?: string;
   category?: string;
   date?: string;
   createdAt?: string;
@@ -28,5 +29,6 @@ export interface FinanceFormData {
   amount: number;
   type: "income" | "expense";
   category?: string;
+  description?: string;
   date?: string;
 }

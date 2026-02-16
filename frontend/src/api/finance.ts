@@ -6,10 +6,13 @@ export const getFinances = async (): Promise<Finance[]> => {
   return res.data;
 };
 
-export const addFinance = async (data: FinanceFormData): Promise<Finance> => {
+export const addFinance = async (data: any): Promise<Finance> => {
   const payload = {
-    ...data,
     amount: Number(data.amount),
+
+    description: data.description || data.title,
+    date: data.date || new Date().toISOString(),
+    type: data.type,
   };
   const res = await api.post("/finances", payload);
   return res.data;
