@@ -9,11 +9,11 @@ Users can register, log in, and manage personal finances including income and ex
 
 ### Login Page
 
-![Login Page](screenshots/login.png)
+![Login Page](screenshots/LoginPage.png.png)
 
 ### Notes Page
 
-![Personal Dashboard](screenshots/Dashboard.png)
+![Personal Dashboard](screenshots/PersonalDashboard.png.png)
 
 ---
 
